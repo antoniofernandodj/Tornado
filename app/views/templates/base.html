@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>{% block title %}Default title{% end %}</title>
+  </head>
+  <body>
+  <h3>Students:</h3>
+    <ul>
+      {% for student in students %}
+        {% block student %}
+          <li>{{ escape(student.name) }}</li>
+        {% end %}
+      {% end %}
+    </ul>
+
+  <form action="." method="post">
+    <div><label>Mensagem: </label><input name="message" /></div>
+    <div><input type="submit" value="enviar" /></div>
+  </form>
+  </body>
+</html>
