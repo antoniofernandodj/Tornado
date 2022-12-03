@@ -7,6 +7,7 @@ What I had in hands at the creation time? Lots of experience in Flask and some i
 ## The pattern-recognition
 
 The first thing I decided to do was get into the documentation and see the face of the hello world.
+So, I think I might regognize component responsabilies in the code to separethe them in their specific packages/modules. 
 
 ```
 import asyncio
@@ -30,7 +31,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-## The handlers
+### The handlers
 At first sight I noticed some things. There is a list of tuples containing pairs (url, Class). This give me a sign that will be usefull to separate in a package all the (url, handlers) I have in my server. But, if I have multiple classes of users? Came in my mind to create a package handlers with as .py files I need in my project, and a __init__.py file accumulating all the different class of handlers in a list, and the main file import that list with  all server handlers:
 
 ```
@@ -60,10 +61,10 @@ handlers = [
 ]
 ```
 
-## The views
+### The views
 
-## The statics
+### The statics
 
-## The database(s)
+### The database(s)
 
-## The run app process
+### The run app process
