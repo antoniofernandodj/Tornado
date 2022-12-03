@@ -33,6 +33,7 @@ if __name__ == "__main__":
 ## The handlers
 At first sight I noticed some things. There is a list of tuples containing pairs (url, Class). This give me a sign that will be usefull to separate in a package all the (url, handlers) I have in my server. But, if I have multiple classes of users? Came in my mind to create a package handlers with as .py files I need in my project, and a __init__.py file accumulating all the different class of handlers in a list, and the main file import that list with  all server handlers:
 
+```
 |
 --handlers--
 |           |
@@ -41,6 +42,8 @@ At first sight I noticed some things. There is a list of tuples containing pairs
 |           --- student.py
 |           |
 |           --- ...etc...
+
+```
 
 in the __init___:
 
