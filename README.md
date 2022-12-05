@@ -62,6 +62,8 @@ At first sight I noticed some things. There is a list of tuples containing pairs
 |           |
 |           --- student.py
 |           |
+|           --- teacher.py
+|           |
 |           --- ...etc...
 
 ```
@@ -76,7 +78,7 @@ from . import (
 
 handlers = [
     *student.handler,
-    *student.handler,
+    *teacher.handler,
     *etc.handlers
 ]
 ```
