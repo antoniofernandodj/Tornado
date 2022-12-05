@@ -1,5 +1,7 @@
 # Tornado
 
+![tornado logo](https://www.python-me.org/assets/img/uploads/tornado-web-server.png)
+
 This repo is a try on tornado framework!
 
 Tornado is a scalable, asynchronous and non-blocking framework, designed to handle high load requests.
