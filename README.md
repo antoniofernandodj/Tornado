@@ -13,15 +13,15 @@ What I had in hands at the creation time? Lots of experience in Flask and some i
 ## Learning
 
 I used a book, the official documentation and some YT videos in brazillian portuguese and english to learn about the framework
-https://www.tornadoweb.org/en/stable/
-https://www.youtube.com/watch?v=-gJ21qzpieA
-https://www.youtube.com/watch?v=8Gt2vHgp7As
-https://www.youtube.com/watch?v=MUWy-NSrvNQ
-https://www.youtube.com/watch?v=NKPHP5p0WXA
-https://www.youtube.com/watch?v=uQmWfGs3qeA
-https://www.youtube.com/watch?v=kCoD6rGpDoE
-https://www.youtube.com/watch?v=3BYN3ouwkRA
-https://www.youtube.com/watch?v=4Ztq-Yz1ero
+- https://www.tornadoweb.org/en/stable/
+- https://www.youtube.com/watch?v=-gJ21qzpieA
+- https://www.youtube.com/watch?v=8Gt2vHgp7As
+- https://www.youtube.com/watch?v=MUWy-NSrvNQ
+- https://www.youtube.com/watch?v=NKPHP5p0WXA
+- https://www.youtube.com/watch?v=uQmWfGs3qeA
+- https://www.youtube.com/watch?v=kCoD6rGpDoE
+- https://www.youtube.com/watch?v=3BYN3ouwkRA
+- https://www.youtube.com/watch?v=4Ztq-Yz1ero
 
 
 ## The pattern-recognition
