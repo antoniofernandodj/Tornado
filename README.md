@@ -1,6 +1,12 @@
 # Tornado
 
-This repo is a try on tornado framework! What a had in mind when I created this was how to create a robust architecture to handle a large website? With many features? Connection with multiples databases if necessary? Multiple views to serve multiple kinds of templates, to each class of users, like one module to handle simple users students, other to handle teachers, other to handle the school principal? You got it.
+This repo is a try on tornado framework!
+
+Tornado is a scalable, asynchronous and non-blocking framework, designed to handle high load requests.
+Scalable, asynchronous and non-blocking framework, designed to handle high load requests.
+Designed to scale to tens of thousands of open connections, making it ideal for applications that require long connections like websockets.
+
+What a had in mind when I created this was how to create a robust architecture to handle a large website? With many features? Connection with multiples databases if necessary? Multiple views to serve multiple kinds of templates, to each class of users, like one module to handle simple users students, other to handle teachers, other to handle the school principal? You got it.
 
 What I had in hands at the creation time? Lots of experience in Flask and some in Django, and almost no experience in the async/await subject. So, i decided tho create this to learn while code.
 
