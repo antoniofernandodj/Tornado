@@ -1,32 +1,27 @@
-from collections import namedtuple
-import os
 
+from dynaconf import Dynaconf
+from os import path
+from pathlib import Path
 
-Config = namedtuple(
-    'Config', (
-        'TORNADO_PORT', 'TORNADO_DEBUG', 'MYSQL_PORT',
-        'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_HOSTNAME',
-        'MYSQL_DATABASE',
-    )
+current_directory = (Path(__file__).parent)
+
+settings = Dynaconf(
+    envvar_prefix="TORNADO",
+    settings_files=[
+        path.join(current_directory, 'settings.toml'),
+        path.join(current_directory, '.secrets.toml')
+    ],
 )
 
-config = Config(
-    TORNADO_PORT=8888,
-    TORNADO_DEBUG=True,
-    MYSQL_PORT=3306,
-    MYSQL_USER='antonio',
-    MYSQL_PASSWORD='senha1234',
-    MYSQL_HOSTNAME='localhost',
-    MYSQL_DATABASE='database'
-)
 
-settings = {
-    "static_path": os.path.join(
-        os.path.dirname(__file__),
-        'views',
-        "static"
-    ),
-    "cookie_secret": "rJtbZZG8M0n1pZOeedI_bG7ymVWezC_sKxb7mk3Uo0whUsCOhtPRRIxyCk2IJME1gg0",
-    "login_url": "/login",
-    "xsrf_cookies": True,
+settings.STATIC_PATH = path.join(path.dirname(__file__), 'views', 'static')
+# `envvar_prefix` = export envvars with `export DYNACONF_FOO=bar`.
+# `settings_files` = Load these files in the order.
+
+
+app_settings = {
+    "static_path": settings.STATIC_PATH,
+    "cookie_secret": settings.COOKIE_SECRET,
+    "login_url": settings.LOGIN_URL,
+    "xsrf_cookies": settings.XSRF_COOKIES,
 }

@@ -1,10 +1,13 @@
-from .config import config, settings
-from .handlers import handlers
+from app.config import settings as s
+from app.config import app_settings
+from app.views import handlers #, routes
 from tornado.web import Application
 
-
-app = Application(
-    handlers=handlers,
-    debug=config.TORNADO_DEBUG,
-    **settings
-)
+def make_app() -> Application:
+    app = Application(
+        handlers=handlers,
+        # routes=routes,
+        debug=s.TORNADO_DEBUG,
+        **app_settings
+    )
+    return app

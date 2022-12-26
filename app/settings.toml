@@ -1,0 +1,4 @@
+LOGIN_URL = "/login"
+TORNADO_PORT = 8888
+TORNADO_DEBUG = true
+XSRF_COOKIES = true

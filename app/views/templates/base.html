@@ -3,18 +3,15 @@
     <title>{% block title %}Default title{% end %}</title>
   </head>
   <body>
-  <h3>Students:</h3>
-    <ul>
-      {% for student in students %}
-        {% block student %}
-          <li>{{ escape(student.name) }}</li>
-        {% end %}
-      {% end %}
-    </ul>
+    <a href="/logout/">logout</a>
+    <h3>Home</h3>
 
-  <form action="." method="post">
-    <div><label>Mensagem: </label><input name="message" /></div>
-    <div><input type="submit" value="enviar" /></div>
-  </form>
+      <div>
+        <div>Nome: {{ student.nome }}</div>
+        </div>user: {{ student.user }}</div>
+      </div>
+
+      <h5>homeworks</h5>
+  
   </body>
 </html>

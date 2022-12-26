@@ -1,0 +1,18 @@
+<form method="post" action="."> {% raw xsrf_form_html() %}
+    <h2>Cadastro</h2>
+    <div>
+        <label for="nome">Nome</label>
+        <input type="text" name="nome" id="nome" placeholder="Digite o nome da pessoa" />
+    </div>
+    <div>
+        <label for="username">User</label>
+        <input type="text" name="user" id="user" placeholder="Digite o nome de usuario" />
+    </div>
+    <div>
+        <label for="nome">Senha</label>
+        <input type="password" name="senha" id="senha" placeholder="Digite senha" />
+    </div>
+    <div>
+        <input type="submit" value="enviar" />
+    </div>
+</form>

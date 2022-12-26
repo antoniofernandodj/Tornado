@@ -1,6 +1,8 @@
-from . import (
+from contextlib import suppress
+from app.models import (
     students
 )
 
 def init_all_dbs():
-    students.init_db()
+    with suppress(Exception):
+        students.init_db()
