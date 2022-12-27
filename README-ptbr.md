@@ -1,13 +1,12 @@
 # Tornado
 
-Este repositório é uma tentativa do framework tornado!
+Este repositório é uma tentativa com o framework Tornado!
 
 Tornado é um framework escalável, assíncrono e não-bloqueante, projetado para lidar com solicitações de alta carga.
-Estrutura escalável, assíncrona e projetada para lidar com solicitações de alta carga.
-Projetado para escalar para dezenas de milhares de conexões abertas, tornando-o ideal para aplicações que exigem conexões longas, como websockets.
+Projetado para escalar para dezenas de milhares de conexões abertas, tornando-o ideal para aplicações que exigem conexões como websockets ou long polling.
 
-O que eu tinha em mente quando criei isso era: Como criar uma arquitetura robusta o suficiente para lidar com um grande site? Com muitos recursos?
-Conexão com múltiplos bancos de dados se necessário? Múltiplas views para atender a vários tipos de models, para cada classe de usuários,
+O que eu tinha em mente quando criei este repositório era: Como projetar uma arquitetura robusta o suficiente para lidar com um grande site? Com muitos recursos?
+Conexão com múltiplos bancos de dados caso necessário? Múltiplas views para atender a vários tipos de models, para cada classe de usuários,
 como um módulo para lidar com usuários simples, alunos, outro para lidar com professores, outro para lidar com o diretor da escola? Você entendeu.
 
 O que eu tinha em mãos no momento da criação? Muita experiência em Flask e alguma em Django, e quase nenhuma experiência no assunto async/await.
@@ -15,8 +14,8 @@ Então, decidi criar isso para aprender durante o código.
 
 ## O reconhecimento de padrões
 
-A primeira coisa que decidi fazer foi entrar na documentação e ver a cara do hello world.
-Então, acho que posso reconhecer as responsabilidades dos componentes no código para separá-los em seus pacotes/módulos específicos.
+A primeira coisa que decidi fazer foi entrar na documentação e ver o aspecto do hello world.
+Então, reconhecendo as responsabilidades dos componentes no código pude separá-los em seus pacotes/módulos específicos.
 
 ```
 import asyncio
@@ -41,40 +40,75 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Os Handle
+### Os Handlers
 À primeira vista notei algumas coisas.
-Existe uma lista de tuplas contendo pares (url, Class) na classe Application.
-Isso me dá um sinal de que será útil separar em um pacote todos os (url, handlers) que tenho em meu servidor,
-bem como as classes "Handle", como a imediatamente acima (da qual falarei mais adiante).
-Mas, se eu tiver várias classes de usuários? Me ocorreu criar um pacote de manipuladores com os arquivos .py que preciso em meu projeto,
-e um arquivo __init__.py acumulando todas as diferentes classes de manipuladores em uma lista,
-e o arquivo principal do projeto importaria essa lista com todos os handlers de servidor e o registraria na classe Application:
+Existe uma lista de tuplas contendo pares (url, Handler) como parametro do método contrutor da classe Application.
+Cada uma destas classes 'Handler' é responsável em lidar com as requisições HTTP e seus verbos pelo que a estrutura sugere,
+dado que o Tornado é contruído em cima do http.server, e também pelo fato de eles estarem ligados a urls na lista em questão.
+Isso me dá um sinal de que será útil separar em um módulo todos os (url, Handlers) que tenho em meu servidor,
+bem como as classes "Handlers", como a imediatamente acima (da qual falarei mais adiante).
+Mas, se eu tiver várias classes de usuários?
+
+Me ocorreu então criar um pacote 'views' para as classes de usuario/visualização.
+Dentro deste pacote eu criarei N pacotes, cada pacote com um __init__.py, seus statics e seus templates.
+A estrutura emergiu de forma natural apontando para esta estrutura, e não para uma unica pasta de templates.
+Se eu precisasse usar uma pasta unica e centralizada para os templates eu teria que carregar uma variável de
+ambiente apontando o diretório da pasta de templates para usá-la em todos os pacotes de 'views'. Por isso
+preferi manter a estrutura atual, também pelo fato de que cada pasta de template isolaria bem as responsabilidades
+de cada módulo.
+
+Em cada pacote dentro de views o arquivo __init__.py teria uma lista de handlers de cada contexto de visualização,
+Enquando que o pacote pai 'views' teria um arquivo __init__.py que acumularia por assim dizer todos os handlers de
+todas as views.
 
 ```
 |
---handlers--
-|           |
-|           --- __init__.py
-|           |
-|           --- student.py
-|           |
-|           --- ...etc...
+├─ app
+|   ├─ models
+|   |
+|   ├─ views
+|   |   |
+|   |   ├─ students
+|   |   |   |
+|   |   |   ├─ static
+|   |   |   |   ├ ...
+|   |   |   |   ...
+|   |   |   |
+|   |   |   ├─ templates
+|   |   |   |   ├ ...
+|   |   |   |   ...
+|   |   |   |
+|   |   |   ├─ __init__.py
+|   |   |   |
+|   |   |   └─ students.py  <- Armazena os handlers students
+|   |   |   
+|   |   ├─ foo ...
+|   |   |   └─ ... <- Armazena os handlers foo
+|   |   |
+|   |   ├─ bar ...
+|   |   |   └─ ... <- Armazena os handlers bar
+|   |   |  
+|   |   └─ __init__.py
+|   |   
+|   ...
+.
+|   └─ __init__.py
 
 ```
 
-No __init___.py:
+No __init___.py do 'views':
 
 ```
-from . import (
-    student,
-    teacher
-)
+from app.views import students
+from app.views import foo
+from app.views import bar
 
 handlers = [
-    *student.handler,
-    *student.handler,
-    *etc.handlers
+    *students.handlers,
+    *students.foo,
+    *students.bar
 ]
+
 ```
 
 ### As views
@@ -82,5 +116,7 @@ handlers = [
 ### Os statics
 
 ### O(s) database(s)
+
+### A autentticação
 
 ### O processo de excecussão process

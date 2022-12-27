@@ -1,23 +1,18 @@
 from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
 from tornado_sqlalchemy import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, DateTime, Text
 from app.config import settings as s
 from time import sleep
 from sqlalchemy.orm import relationship
 
+from tornado_sqlalchemy import SQLAlchemy
 
 Base = declarative_base()
-login = f'{s.POSTGRES_USER}:{s.POSTGRES_PASSWORD}'
-
-try:
-    socket = f'{s.POSTGRES_HOSTNAME}:{s.POSTGRES_PORT}'
-except AttributeError:
-    socket = f'localhost:{s.POSTGRES_PORT}'
-
 
 # pip install psycopg2-binary
-students_engine = create_engine(f"postgresql+psycopg2://{login}@{socket}/{s.POSTGRES_DB}")
+students_engine = create_engine(s.DATABASE_URI)
+# db = SQLAlchemy(s.DATABASE_URI)
 
 
 student_teacher = Table(
@@ -38,7 +33,7 @@ class Admin(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     user = Column(String(100))
-    senha = Column(String(100))
+    password = Column(Text)
 
 
 class Teacher(Base):
@@ -46,10 +41,14 @@ class Teacher(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     user = Column(String(100))
-    password = Column(String(100))
+    password = Column(Text)
     code = Column(String(100))
+    homeworks = relationship("Homework", back_populates="teacher")
     students = relationship("Student", secondary=student_teacher, back_populates="teachers")
     academic_discipline = relationship("AcademicDiscipline", back_populates="teacher", uselist="false")
+    
+    def __repr__(self):
+        return f"<Teacher(id='{self.id}', name='{self.name}')>"
 
 
 class Student(Base):
@@ -57,13 +56,13 @@ class Student(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     user = Column(String(100))
-    password = Column(String(100))
+    password = Column(Text)
     code = Column(String(100))
     teachers = relationship("Teacher", secondary=student_teacher, back_populates="students")
 
 
     def __repr__(self):
-        return f"<User(id='{self.id}', nome='{self.nome}')>"
+        return f"<Student(id='{self.id}', name='{self.name}')>"
 
 
 class AcademicDiscipline(Base):
@@ -73,6 +72,10 @@ class AcademicDiscipline(Base):
     name = Column(String(100))
     teacher = relationship("Teacher", back_populates="academic_discipline")
     teacher_id = Column(Integer, ForeignKey("teacher.id"))
+    books = relationship("Book", back_populates="academic_discipline")
+    homeworks = relationship("Homework", back_populates="academic_discipline")
+    exams = relationship("Exam", back_populates="academic_discipline")
+    
 
 
 class Book(Base):
@@ -82,6 +85,8 @@ class Book(Base):
     name = Column(String(100))
     academic_discipline = relationship("AcademicDiscipline", back_populates="books")
     academic_discipline_id = Column(Integer, ForeignKey("academic_discipline.id"))
+    homeworks = relationship("Homework", back_populates="book")
+    exams = relationship("Exam", back_populates="book")
 
 
 class Homework(Base):

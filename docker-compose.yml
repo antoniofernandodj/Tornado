@@ -5,70 +5,63 @@ services:
   nginx:
     container_name: nginx
     build:
+      dockerfile: ./nginx/nginx.dockerfile
       context: .
-      dockerfile: ./nginx/Dockerfile
     image: nginx
     ports:
       - 80:80
     depends_on:
       - web1
-      # - web2
-      # - web3
-    volumes:
-      - static_volume:/home/app/static/
+      - web2
+      - web3
 
   web1:
     container_name: web1
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: python main.py
-    restart: always
-    ports:
-      - 8001:8001
     env_file:
       - "./app/.secrets.toml"
       - "./app/.secrets.env"
+    build: .
+    command: python main.py
+    ports:
+      - 8001:8001
+    environment:
+      PORT: 8001
     depends_on:
       - db
     volumes:
       - static_volume:/home/app/static/
 
-  # web2:
-  #   container_name: web2
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   command: python main.py
-  #   restart: always
-  #   ports:
-  #     - 8002:8002
-  #   env_file:
-  #     - "./app/.secrets.toml"
-  #     - "./app/.secrets.env"
-  #   depends_on:
-  #     - db
-  #     - web1
-  #   volumes:
-  #     - static_volume:/home/app/static/
+  web2:
+    container_name: web2
+    env_file:
+      - "./app/.secrets.toml"
+      - "./app/.secrets.env"
+    build: .
+    command: python main.py
+    ports:
+      - 8002:8002
+    environment:
+      PORT: 8002
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/home/app/static/
 
-  # web3:
-  #   container_name: web3
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   command: python main.py
-  #   restart: always
-  #   ports:
-  #     - 8003:8003
-  #   env_file:
-  #     - "./app/.secrets.toml"
-  #     - "./app/.secrets.env"
-  #   depends_on:
-  #     - db
-  #     - web2
-  #   volumes:
-  #     - static_volume:/home/app/static/
+  web3:
+    container_name: web3
+    env_file:
+      - "./app/.secrets.toml"
+      - "./app/.secrets.env"
+    build: .
+    command: python main.py
+    ports:
+      - 8003:8003
+    environment:
+      PORT: 8003
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/home/app/static/
 
   db:
     container_name: db

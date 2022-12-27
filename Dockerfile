@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.9.6-alpine as builder
+FROM python:3.10.0-alpine as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -25,7 +25,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # copy entrypoint.prod.sh
-COPY ./entrypoint.sh .
+# COPY ./entrypoint.sh .
 # RUN chmod +x entrypoint.sh
 
 # # run entrypoint.prod.sh

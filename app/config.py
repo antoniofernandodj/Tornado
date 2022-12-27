@@ -2,7 +2,9 @@
 from dynaconf import Dynaconf
 from os import path
 from pathlib import Path
+from os import getenv
 
+PORT = getenv('PORT')
 current_directory = (Path(__file__).parent)
 
 settings = Dynaconf(
@@ -12,6 +14,19 @@ settings = Dynaconf(
         path.join(current_directory, '.secrets.toml')
     ],
 )
+
+settings.PORT = int(PORT) if PORT else 8888
+
+
+
+login = f'{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}'
+
+try:
+    socket = f'{settings.POSTGRES_HOSTNAME}:{settings.POSTGRES_PORT}'
+except AttributeError:
+    socket = f'localhost:{settings.POSTGRES_PORT}'
+    
+settings.DATABASE_URI = f"postgresql+psycopg2://{login}@{socket}/{settings.POSTGRES_DB}"
 
 
 settings.STATIC_PATH = path.join(path.dirname(__file__), 'views', 'static')
